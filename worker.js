@@ -1,9 +1,19 @@
 /**
  * Cloudflare Worker: Free Fire 100% Real Live Player Info API
  * Orvex Research
- * Output: Pretty-Printed JSON
- * Ready for 1-Click Copy-Paste on workers.cloudflare.com
+ * Clean JSON Output (Zero Duplicate Data)
  */
+
+function safeParseArray(val) {
+  if (Array.isArray(val)) return val;
+  if (typeof val === 'string') {
+    try {
+      const p = JSON.parse(val);
+      if (Array.isArray(p)) return p;
+    } catch (e) {}
+  }
+  return val ? [val] : [];
+}
 
 export default {
   async fetch(request, env, ctx) {
@@ -14,7 +24,6 @@ export default {
       'Content-Type': 'application/json; charset=utf-8'
     };
 
-    // Handle CORS preflight
     if (request.method === 'OPTIONS') {
       return new Response(null, { headers: corsHeaders });
     }
@@ -22,7 +31,6 @@ export default {
     const url = new URL(request.url);
     const uid = url.searchParams.get('uid');
 
-    // If no UID is provided, return API instructions
     if (!uid) {
       return new Response(
         JSON.stringify(
@@ -32,7 +40,7 @@ export default {
             usage: 'Add ?uid=<PLAYER_UID> to the URL',
             examples: [
               `${url.origin}/?uid=949587293`,
-              `${url.origin}/?uid=2651407194`
+              `${url.origin}/?uid=3514787412`
             ]
           },
           null,
@@ -76,7 +84,7 @@ export default {
 
       if (!token) throw new Error('Failed to obtain upstream session token');
 
-      // Step 3: Fetch Player In-Game Profile
+      // Step 3: Fetch Real Player In-Game Data
       const r3 = await fetch('https://gameskinbo.com/api/ff_id_checker', {
         method: 'POST',
         headers: {
@@ -98,16 +106,42 @@ export default {
         );
       }
 
-      // Parse inner raw_data if stringified
-      let parsedRawData = data.raw_data;
-      if (typeof data.raw_data === 'string') {
-        try {
-          parsedRawData = JSON.parse(data.raw_data);
-        } catch (e) {}
-      }
+      // Check guild status
+      const hasGuild = Boolean(data.guild_id && data.guild_id !== 'None' && data.guild_name);
+      const guildInfo = hasGuild
+        ? {
+            has_guild: true,
+            id: data.guild_id,
+            name: data.guild_name,
+            level: data.guild_level,
+            capacity: data.guild_capacity,
+            member_count: data.guild_member,
+            leader_name: data.guild_leader_name,
+            leader_uid: data.guild_leader_uid,
+            leader_level: data.guild_leader_level,
+            leader_likes: data.guild_leader_likes
+          }
+        : {
+            has_guild: false
+          };
 
-      // Formulate Pretty-Printed Response
-      const responsePayload = {
+      // Check pet status
+      const hasPet = Boolean(data.pet_id && data.pet_id !== 0);
+      const petInfo = hasPet
+        ? {
+            has_pet: true,
+            id: data.pet_id,
+            level: data.pet_level,
+            exp: data.pet_exp,
+            skill_id: data.pet_selected_skill_id,
+            skin_id: data.pet_skin_id
+          }
+        : {
+            has_pet: false
+          };
+
+      // Clean Response Object with ZERO DUPLICATES
+      const cleanResponse = {
         success: true,
         live_server_status: '100% Real Live Data (Garena OB55)',
         player: {
@@ -115,42 +149,27 @@ export default {
           name: data.name,
           level: data.level,
           exp: data.exp,
-          likes: data.likes,
-          region: data.region,
-          credit_score: data.credit_score,
-          signature: data.signature,
+          likes: Number(data.likes || 0),
+          region: data.region || 'BD',
+          gender: data.gender || 'Unknown',
+          language: data.language || 'Language_EN',
+          credit_score: data.credit_score || 100,
+          signature: data.signature || 'None',
           created_at: data.created_at,
           last_login: data.last_login,
-          br_rank_point: data.br_rank_point,
-          br_max_rank: data.br_max_rank,
-          cs_rank_point: data.cs_rank_point,
-          cs_max_rank: data.cs_max_rank,
-          equipped_outfit: data.equipped_outfit,
-          equipped_skills: data.equipped_skills,
-          equipped_weapon: data.equipped_weapon
+          br_rank_point: data.br_rank_point || 0,
+          br_max_rank: data.br_max_rank || 0,
+          cs_rank_point: data.cs_rank_point || 0,
+          cs_max_rank: data.cs_max_rank || 0,
+          equipped_outfit: safeParseArray(data.equipped_outfit),
+          equipped_skills: safeParseArray(data.equipped_skills),
+          equipped_weapon: safeParseArray(data.equipped_weapon)
         },
-        guild: {
-          id: data.guild_id,
-          name: data.guild_name,
-          level: data.guild_level,
-          capacity: data.guild_capacity,
-          member_count: data.guild_member,
-          leader_name: data.guild_leader_name,
-          leader_uid: data.guild_leader_uid,
-          leader_level: data.guild_leader_level,
-          leader_likes: data.guild_leader_likes
-        },
-        pet: {
-          id: data.pet_id,
-          level: data.pet_level,
-          exp: data.pet_exp,
-          skill_id: data.pet_selected_skill_id,
-          skin_id: data.pet_skin_id
-        },
-        raw_garena_data: parsedRawData
+        guild: guildInfo,
+        pet: petInfo
       };
 
-      return new Response(JSON.stringify(responsePayload, null, 2), {
+      return new Response(JSON.stringify(cleanResponse, null, 2), {
         status: 200,
         headers: corsHeaders
       });
