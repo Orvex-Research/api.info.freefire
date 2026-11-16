@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free Fire Live Player API & Checker</title>
+  <title>Orvex Research - Free Fire Live Player API & Checker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
@@ -398,6 +398,16 @@ print("Player Name: \${data['name']}, Level: \${data['level']}");</div>
   </div>
 
   <script>
+    // Check if UID is passed via URL query parameter (e.g. ?uid=949587293)
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const uidParam = params.get('uid');
+      if (uidParam) {
+        document.getElementById('uidInput').value = uidParam;
+        checkPlayer();
+      }
+    });
+
     function quickFill(uid) {
       document.getElementById('uidInput').value = uid;
       checkPlayer();

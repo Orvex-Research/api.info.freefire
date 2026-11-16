@@ -1,6 +1,9 @@
-# 🔥 Free Fire 100% Real Live Player Info API & GitHub Page
+# 🔥 Orvex Research - Free Fire 100% Real Live Player Info API
 
-Garena Free Fire (OB55) এর আসল লাইভ প্লেয়ার প্রোফাইল ডাটা (IGN, Level, Likes, Guild, Rank, Credit Score, Outfits, Skills) ফেচ করার ওপেন সোর্স REST API এবং ওয়েব চেকার।
+Garena Free Fire (OB55) এর আসল লাইভ প্লেয়ার প্রোফাইল ডাটা (IGN, Level, Likes, Guild, Rank, Credit Score, Outfits, Skills) ফেচ করার ওপেন সোর্স REST API এবং GitHub Pages চেকার।
+
+**GitHub Repository:** `https://github.com/Orvex-Research/api.info.freefire`  
+**GitHub Pages URL:** `https://orvex-research.github.io/api.info.freefire/`
 
 ---
 
@@ -8,60 +11,64 @@ Garena Free Fire (OB55) এর আসল লাইভ প্লেয়ার �
 
 ```text
 github/
-├── index.html            # GitHub Pages এ হোস্টিং করার জন্য রেডি ওয়েব ইন্টারফেস
+├── index.html            # GitHub Pages ওয়েব চেকার (https://orvex-research.github.io/api.info.freefire/)
+├── server.js             # আপনার নিজের লোকাল / VPS Node.js সার্ভার (Zero Dependencies)
+├── direct_api.py         # ডিরেক্ট পাইথন স্ক্রিপ্ট
+├── worker.js             # Cloudflare Worker সার্ভারলেস স্ক্রিপ্ট
 ├── api/
-│   ├── player.js         # Vercel Serverless REST API (/api/player?uid=...)
+│   ├── player.js         # API এন্ডপয়েন্ট (/api/player?uid=...)
 │   └── account-info.js   # অল্টারনেটিভ এন্ডপয়েন্ট (/api/account-info?uid=...)
-├── worker.js             # Cloudflare Worker স্ক্রিপ্ট (ফ্রি এজ রানটাইম)
-├── server.js             # লোকাল Node.js স্ট্যান্ডঅ্যালোন সার্ভার (Zero Dependencies)
-├── direct_api.py         # সরাসরি পাইথন স্ক্রিপ্ট
-├── vercel.json           # Vercel ডেপ্লয় ও CORS কনফিগারেশন
 ├── package.json          # নোড প্যাকেজ কনফিগ
 └── README.md             # পূর্ণাঙ্গ গাইড
 ```
 
 ---
 
-## 🚀 ১. গিটহাবে পুশ করার নিয়ম (How to Push to GitHub)
+## 🚀 ১. এই রিপোজিটরিতে সরাসরি পুশ করার CMD কমান্ড
 
-আপনার টার্মিনাল বা CMD ওপেন করে `github` ফোল্ডারে প্রবেশ করুন:
+আপনার CMD বা টার্মিনালে নিচের কমান্ডটি রান করুন:
 
 ```bash
 cd "f:\my progect with Ai\free fire custome api\github"
-git init
-git add .
-git commit -m "Free Fire Live API initial commit"
-git branch -M main
-git remote add origin https://github.com/আপনার-ইউজারনেম/আপনার-রেপো-নাম.git
 git push -u origin main
 ```
 
+*(যদি গিটহাব পাসওয়ার্ড চায়, আপনার GitHub Personal Access Token ব্যবহার করুন)*
+
 ---
 
-## 🌐 ২. GitHub Pages চালু করার নিয়ম (Enable GitHub Pages)
+## 🌐 ২. GitHub Pages অন করার ধাপ
 
-১. আপনার GitHub রিপোজিটরির **Settings** ট্যাবে যান।  
-২. বাম পাশের মেনু থেকে **Pages** সিলেক্ট করুন।  
-৩. **Build and deployment** সেকশনে:
+১. আপনার রিপোজিটরিতে যান: [https://github.com/Orvex-Research/api.info.freefire/settings/pages](https://github.com/Orvex-Research/api.info.freefire/settings/pages)  
+২. **Build and deployment** সেকশনে:
    - **Source:** `Deploy from a branch`
-   - **Branch:** `main` এবং ফোল্ডার `/ (root)` সিলেক্ট করে **Save** বাটনে ক্লিক করুন।  
-৪. ১-২ মিনিটের মধ্যে আপনার ফ্রি সাইট লাইভ হয়ে যাবে:  
-   `https://<your-username>.github.io/<your-repo-name>/`
+   - **Branch:** `main` সিলেক্ট করুন এবং ফোল্ডার `/ (root)` রেখে **Save** দিন।  
+৩. সাথে সাথে লাইভ হয়ে যাবে আপনার GitHub Pages:  
+   👉 `https://orvex-research.github.io/api.info.freefire/`
 
 ---
 
-## ⚡ ৩. ২৪/৭ লাইভ পাবলিক API বানানোর নিয়ম (100% Free Vercel API)
+## 💡 ৩. GitHub Pages দিয়ে কীভাবে API কাজ করবে? (Vercel ও Render ছাড়া)
 
-> **মনে রাখবেন:** GitHub Pages শুধুমাত্র স্ট্যাটিক ফাইল (HTML/JS) হোস্ট করে। কোনো ব্যাকএন্ড সার্ভার ছাড়া অ্যাপ্লিকেশনের জন্য ২৪/৭ ফ্রি পাবলিক REST API লিংক পেতে:
+GitHub Pages সরাসরি ব্রাউজারে সুন্দর UI এবং ডাটা লোড করে।  
+আপনার কোনো থার্ড পার্টি সাইট (যেমন Vercel বা Render) লাগবে না। আপনি নিচের ২টি সহজ উপায়ে API চালাতে পারবেন:
 
-১. [Vercel.com](https://vercel.com)-এ ফ্রি একাউন্ট খুলুন (Login with GitHub)।  
-২. **Add New Project** এ গিয়ে আপনার গিটহাবের এই রিপোজিটরিটি ইমপোর্ট করুন।  
-৩. কোনো সেটিং পরিবর্তন না করে সরাসরি **Deploy** বাটনে ক্লিক করুন।  
-৪. সাথে সাথে আপনি পেয়ে যাবেন একটি পার্মানেন্ট গ্লোবাল লাইভ API URL:
-   ```http
-   GET https://your-project.vercel.app/api/player?uid=949587293
-   ```
-   *(এটিতে অলরেডি CORS এনাবল করা আছে, যা Flutter, Android বা যেকোনো অ্যাপ থেকে সরাসরি কাজ করবে)*
+### পদ্ধতি A: আপনার নিজস্ব লোকাল / VPS সার্ভার চালানো (সবচেয়ে ফাস্ট ও নিরাপদ)
+আপনার কম্পিউটারে বা কোনো ভিপিএসে শুধু চালান:
+```bash
+node server.js
+```
+এবার যেকোনো অ্যাপ বা সফটওয়্যার থেকে কল করুন:
+```http
+GET http://localhost:3000/api/player?uid=949587293
+```
+
+### পদ্ধতি B: Cloudflare Workers (১০০% ফ্রি ক্লাউড API)
+Vercel বা Render এর বদলে ক্লাউডফ্লেয়ার সম্পূর্ণ ফ্রি:
+- [workers.cloudflare.com](https://workers.cloudflare.com)-এ যান।
+- `worker.js` এর কোড পেস্ট করে **Save and Deploy** দিন।
+- ইনস্ট্যান্ট পার্মানেন্ট API পেয়ে যাবেন:
+  `https://freefire-api.<your-name>.workers.dev/?uid=949587293`
 
 ---
 
