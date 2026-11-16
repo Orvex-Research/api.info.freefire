@@ -1,7 +1,8 @@
 /**
- * Orvex Research - Free Fire 100% Real Live Player Info API
- * Pure Single-File JavaScript Engine
- * Clean Pretty-Printed JSON (Zero Duplicate Data)
+ * Free Fire 100% Real Live Player Info API
+ * Developed by: SBS
+ * Copyright: Copyright by SBS
+ * Clean Pretty-Printed JSON
  */
 
 const http = require('http');
@@ -105,6 +106,8 @@ async function getPlayerInfo(uid) {
 
   return {
     success: true,
+    developer: 'SBS',
+    copyright: 'Copyright by SBS',
     live_server_status: '100% Real Live Data (Garena OB55)',
     player: {
       uid: cleanUid,
@@ -165,7 +168,7 @@ if (require.main === module) {
         res.end(JSON.stringify(result, null, 2));
       } catch (err) {
         res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
-        res.end(JSON.stringify({ success: false, error: err.message }, null, 2));
+        res.end(JSON.stringify({ success: false, developer: 'SBS', error: err.message }, null, 2));
       }
     });
 
@@ -179,7 +182,7 @@ if (require.main === module) {
         console.log(JSON.stringify(data, null, 2));
       })
       .catch((err) => {
-        console.error(JSON.stringify({ success: false, error: err.message }, null, 2));
+        console.error(JSON.stringify({ success: false, developer: 'SBS', error: err.message }, null, 2));
         process.exit(1);
       });
   }

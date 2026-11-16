@@ -1,7 +1,8 @@
 /**
  * Cloudflare Worker: Free Fire 100% Real Live Player Info API
- * Orvex Research
- * Clean JSON Output (Zero Duplicate Data)
+ * Developed by: SBS
+ * Copyright: Copyright by SBS
+ * Output: Clean Pretty-Printed JSON (Zero Duplicate Data)
  */
 
 function safeParseArray(val) {
@@ -36,7 +37,9 @@ export default {
         JSON.stringify(
           {
             status: 'Online',
-            service: 'Orvex Research - Free Fire Live Player API',
+            developer: 'SBS',
+            copyright: 'Copyright by SBS',
+            service: 'Free Fire 100% Live Player Info API',
             usage: 'Add ?uid=<PLAYER_UID> to the URL',
             examples: [
               `${url.origin}/?uid=949587293`,
@@ -101,7 +104,7 @@ export default {
 
       if (!r3.ok) {
         return new Response(
-          JSON.stringify({ success: false, error: data?.error || 'Player lookup failed' }, null, 2),
+          JSON.stringify({ success: false, developer: 'SBS', error: data?.error || 'Player lookup failed' }, null, 2),
           { status: r3.status, headers: corsHeaders }
         );
       }
@@ -140,9 +143,11 @@ export default {
             has_pet: false
           };
 
-      // Clean Response Object with ZERO DUPLICATES
+      // Clean Response Object with Copyright by SBS
       const cleanResponse = {
         success: true,
+        developer: 'SBS',
+        copyright: 'Copyright by SBS',
         live_server_status: '100% Real Live Data (Garena OB55)',
         player: {
           uid: cleanUid,
@@ -176,7 +181,7 @@ export default {
 
     } catch (err) {
       return new Response(
-        JSON.stringify({ success: false, error: err.message }, null, 2),
+        JSON.stringify({ success: false, developer: 'SBS', error: err.message }, null, 2),
         { status: 500, headers: corsHeaders }
       );
     }
