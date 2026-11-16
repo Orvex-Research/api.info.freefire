@@ -1,12 +1,19 @@
 {
-  "name": "free-fire-live-api",
+  "name": "freefire-live-api",
   "version": "1.0.0",
-  "description": "100% Real Live Free Fire Player Info API & GitHub Pages Checker",
-  "main": "server.js",
+  "description": "100% Real Live Free Fire Player Info API (Pure JavaScript - No HTML)",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node index.js 949587293"
   },
-  "keywords": ["freefire", "garena", "api", "id-checker", "player-info"],
-  "author": "",
+  "keywords": [
+    "freefire",
+    "garena",
+    "api",
+    "player-info",
+    "pure-js"
+  ],
+  "author": "Orvex Research",
   "license": "MIT"
 }
