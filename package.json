@@ -1,0 +1,12 @@
+{
+  "name": "free-fire-live-api",
+  "version": "1.0.0",
+  "description": "100% Real Live Free Fire Player Info API & GitHub Pages Checker",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["freefire", "garena", "api", "id-checker", "player-info"],
+  "author": "",
+  "license": "MIT"
+}
