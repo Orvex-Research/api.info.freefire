@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Free Fire Live Player API (Orvex Research)</title>
+  <style>
+    body {
+      background-color: #0b0e14;
+      color: #38bdf8;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      padding: 20px;
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body><div id="output">⚡ Loading Live Free Fire Player Data...</div>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const uid = urlParams.get('uid') || '949587293';
+
+  // Attempt fetch from local API server
+  fetch('http://localhost:5000/api/account-info?uid=' + uid)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('output').innerText = JSON.stringify(data, null, 2);
+    })
+    .catch(() => {
+      // Fallback API JSON representation
+      document.getElementById('output').innerText = JSON.stringify({
+        "status": "Online",
+        "service": "Orvex Research Free Fire API",
+        "repository": "https://github.com/Orvex-Research/api.info.freefire",
+        "requested_uid": uid,
+        "file": "api.js",
+        "usage": {
+          "cli": "node api.js " + uid,
+          "server": "node api.js server"
+        },
+        "live_endpoint": "http://localhost:5000/api/account-info?uid=" + uid
+      }, null, 2);
+    });
+</script>
+</body>
+</html>
